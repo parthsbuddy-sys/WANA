@@ -5,17 +5,17 @@ import fs from "fs";
 import path from "path";
 
 export const metadata = {
-  title: "WA-AKG | Premium WhatsApp Gateway",
+  title: "WANA | Premium WhatsApp Gateway",
   description: "A powerful, self-hosted dashboard to manage your WhatsApp sessions, schedules, and auto-replies. Built for modern businesses.",
   openGraph: {
-    title: "WA-AKG | Premium WhatsApp Gateway",
+    title: "WANA | Premium WhatsApp Gateway",
     description: "Self-hosted WhatsApp Gateway with Multi-device support, Auto-replies, and API integration.",
     type: "website",
-    url: process.env.NEXT_PUBLIC_APP_URL || "https://wa-akg.app",
+    url: process.env.NEXT_PUBLIC_APP_URL || "https://wana.app",
   },
   twitter: {
     card: "summary_large_image",
-    title: "WA-AKG | Premium WhatsApp Gateway",
+    title: "WANA | Premium WhatsApp Gateway",
     description: "Self-hosted WhatsApp Gateway with Multi-device support, Auto-replies, and API integration.",
   },
 };
@@ -40,13 +40,13 @@ export default function Home() {
               <Bot className="h-5 w-5 md:h-6 md:w-6" />
               <div className="absolute inset-0 rounded-full bg-primary blur-md -z-10 opacity-50 animate-pulse-glow" />
             </div>
-            <span className="text-foreground tracking-tight hidden sm:inline-block">WA-AKG</span>
+            <span className="text-foreground tracking-tight hidden sm:inline-block">WANA</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Features</Link>
             <Link href="/docs" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">API & Docs</Link>
-            <Link href="https://github.com/mrifqidaffaaditya/WA-AKG" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="https://github.com/mspark/WANA" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               <Github className="h-4 w-4" /> GitHub
             </Link>
           </nav>
@@ -180,15 +180,15 @@ export default function Home() {
               <div className="p-2 rounded-xl bg-primary/10">
                 <Bot className="h-6 w-6 text-primary" />
               </div>
-              <span className="text-xl font-bold text-foreground">WA-AKG</span>
+              <span className="text-xl font-bold text-foreground">WANA</span>
             </div>
             <div className="flex gap-8 text-sm font-medium">
               <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
               <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-              <Link href="https://github.com/mrifqidaffaaditya/WA-AKG" className="text-muted-foreground hover:text-foreground transition-colors">GitHub</Link>
+              <Link href="https://github.com/mspark/WANA" className="text-muted-foreground hover:text-foreground transition-colors">GitHub</Link>
             </div>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} WA-AKG. Released under MIT.
+              © {new Date().getFullYear()} WANA. Released under MIT.
             </p>
           </div>
         </div>

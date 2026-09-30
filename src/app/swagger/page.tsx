@@ -72,7 +72,7 @@ export default function ApiDocsPage() {
                 <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
                     <div className="text-center mb-6">
                         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                            WA-AKG API Documentation
+                            WANA API Documentation
                         </h1>
                         <p className="text-gray-600 text-sm">
                             Please authenticate to access Swagger UI
@@ -139,7 +139,7 @@ export default function ApiDocsPage() {
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 shadow-lg">
                 <div className="container mx-auto flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold">WA-AKG API Documentation</h1>
+                        <h1 className="text-2xl font-bold">WANA API Documentation</h1>
                         <p className="text-blue-100 text-sm mt-1">
                             Interactive API documentation with 58+ endpoints
                         </p>

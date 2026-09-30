@@ -71,7 +71,7 @@ export const bindSessionStore = (sock: WASocket, sessionId: string, io: Server |
                 // Execute Bot Commands (Only for Notify / New Messages)
                 if (type === 'notify' && savedMessage) {
                     // Run in background, don't await strictly to not block saving
-                    handleBotCommand(sock, sessionId, msg).catch(e => logger.error("Bot", "Bot Handler Error", e));
+                    // handleBotCommand(sock, sessionId, msg).catch(e => logger.error("Bot", "Bot Handler Error", e));
                 }
             } catch (error) {
                 logger.error("Store", "Error saving message", error);
@@ -542,18 +542,9 @@ async function processAndSaveMessage(
                 } : {}
             });
 
-            // Welcome Message Logic
-            if (!fromMe && triggerWebhook && config?.welcomeMessage && sock) {
-                // Let's check if message count for this contact is exactly 1 (the one we just saved)
-                const msgCount = await prisma.message.count({
-                    where: { sessionId: dbSessionId, remoteJid: finalRemoteJid }
-                });
-
-                if (msgCount === 1) {
-                    logger.info("Store", `Sending welcome message to ${finalRemoteJid}`);
-                    await sock.sendMessage(finalRemoteJid, { text: config.welcomeMessage });
-                }
-            }
+            // Welcome Message Logic (DISABLED)
+            // if (false) {
+            // }
         }
 
         // Trigger webhook for new messages only (not history sync)

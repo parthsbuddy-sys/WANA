@@ -245,6 +245,7 @@ enum AccessMode {
   OWNER
   SPECIFIC
   BLACKLIST
+  CUSTOM_AI
 }
 
 model BotConfig {
@@ -282,6 +283,13 @@ model BotConfig {
   welcomeMessage  String? @db.Text
   autoRead        Boolean @default(false)
   alwaysOnline    Boolean @default(false)
+
+  // Custom AI / LLM Configuration
+  aiEnabled       Boolean  @default(false)
+  aiApiKey        String?  @db.Text
+  aiModel         String   @default("qwen/qwen3.8-27b")
+  aiPrompt        String?  @db.Text
+  customFilterPrompt String? @db.Text
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

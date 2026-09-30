@@ -1,6 +1,6 @@
-# 🔄 WA-AKG Update Guide
+# 🔄 WANA Update Guide
 
-Keep your **WA-AKG** instance up-to-date with the latest features, security patches, and performance improvements.
+Keep your **WANA** instance up-to-date with the latest features, security patches, and performance improvements.
 
 ---
 
@@ -9,7 +9,7 @@ Keep your **WA-AKG** instance up-to-date with the latest features, security patc
 Follow these steps to update your application safely.
 
 ### Option A: Automatic Update (Recommended)
-If you are deploying with PM2 and using the built-in [start.sh](file:///home/aditya/project/WA-AKG/start.sh) script, updating is as simple as:
+If you are deploying with PM2 and using the built-in [start.sh](file:///home/aditya/project/WANA/start.sh) script, updating is as simple as:
 ```bash
 git pull
 ./start.sh

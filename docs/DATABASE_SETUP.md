@@ -1,6 +1,6 @@
 # 🗄️ Database Setup Guide
 
-This guide will help you set up the database for **WA-AKG**. The project uses **Prisma ORM**, which supports PostgreSQL, MySQL, SQLite, and MongoDB.
+This guide will help you set up the database for **WANA**. The project uses **Prisma ORM**, which supports PostgreSQL, MySQL, SQLite, and MongoDB.
 
 ## 1. Prerequisites
 
@@ -12,7 +12,7 @@ Ensure you have a database server running.
 
 ## 2. Docker Compose Setup (Alternative)
 
-WA-AKG menyertakan `docker-compose.yml` di root project yang mendefinisikan container MySQL 8.0 (`wa-akg-db`) dan aplikasi (`wa-akg-app`).
+WANA menyertakan `docker-compose.yml` di root project yang mendefinisikan container MySQL 8.0 (`wa-akg-db`) dan aplikasi (`wa-akg-app`).
 
 1. **Siapkan Environment**:
    ```bash

@@ -1,4 +1,4 @@
-# 🏗️ WA-AKG Project Architecture & Logic
+# 🏗️ WANA Project Architecture & Logic
 
 > **Version**: 1.6.1  
 > **Last Updated**: June 2026  
@@ -8,7 +8,7 @@
 
 ## 🏗️ System Architecture
 
-WA-AKG is a decoupled system where the WhatsApp engine (Baileys) runs as a core service, integrated into a Next.js App Router environment.
+WANA is a decoupled system where the WhatsApp engine (Baileys) runs as a core service, integrated into a Next.js App Router environment.
 
 ```mermaid
 graph TD
@@ -116,5 +116,5 @@ Configuration is centralized in `.env`. The project natively supports standard b
 
 ---
 <div align="center">
-  <small>Technical Reference for WA-AKG dev team.</small>
+  <small>Technical Reference for WANA dev team.</small>
 </div>

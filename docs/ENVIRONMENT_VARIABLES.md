@@ -1,6 +1,6 @@
 # 🔐 Environment Variables Guide
 
-This document provides a comprehensive reference for all configuration options available in **WA-AKG**. 
+This document provides a comprehensive reference for all configuration options available in **WANA**. 
 
 > [!WARNING]
 > Never commit your `.env` file to version control (Git). It contains sensitive credentials that could compromise your system.
@@ -41,7 +41,7 @@ Branding attributes and client interface pagination settings.
 
 | Variable | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `APP_NAME` | string | `WA-AKG` | Custom name displayed across the login screens, dashboard header, and sidebar footer. |
+| `APP_NAME` | string | `WANA` | Custom name displayed across the login screens, dashboard header, and sidebar footer. |
 | `LOGO_URL` | string | — | Custom image URL for your brand logo (leave empty to use default asset). |
 | `FAVICON_URL` | string | — | Custom image URL for the browser tab favicon (leave empty to use default asset). |
 | `NEXT_PUBLIC_CHAT_PAGE_SIZE` | number | `50` | Default number of conversations loaded per page in the chat window. |

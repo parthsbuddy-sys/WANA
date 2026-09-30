@@ -1,4 +1,4 @@
-# WA-AKG API Documentation
+# WANA API Documentation
 
 # WhatsApp AI Gateway — Complete API Reference
 
@@ -432,7 +432,7 @@ Content-Type: application/json
   "message": "string",
   "result": [
     {
-      "text": "Hello from WA-AKG!"
+      "text": "Hello from WANA!"
     }
   ]
 }
@@ -1195,11 +1195,11 @@ Get all sessions accessible to the authenticated user (role-based filtering)
       "email": "user@example.com"
     },
     "botConfig": {
-      "text": "Hello from WA-AKG!"
+      "text": "Hello from WANA!"
     },
     "webhooks": [
       {
-        "text": "Hello from WA-AKG!"
+        "text": "Hello from WANA!"
       }
     ],
     "_count": {
@@ -1286,11 +1286,11 @@ Content-Type: application/json
   "status": "Connected",
   "userId": "string",
   "botConfig": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   },
   "webhooks": [
     {
-      "text": "Hello from WA-AKG!"
+      "text": "Hello from WANA!"
     }
   ],
   "_count": {
@@ -1544,11 +1544,11 @@ Get detailed information about a specific session including uptime and status
   "status": "Connected",
   "userId": "string",
   "botConfig": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   },
   "webhooks": [
     {
-      "text": "Hello from WA-AKG!"
+      "text": "Hello from WANA!"
     }
   ],
   "_count": {
@@ -1564,7 +1564,7 @@ Get detailed information about a specific session including uptime and status
   "messageCount": 0,
   "hasInstance": true,
   "me": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -1614,7 +1614,7 @@ Start, stop, restart, or logout a session
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -1712,7 +1712,7 @@ Permanently deletes session and logs out from WhatsApp
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -1902,7 +1902,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -1952,7 +1952,7 @@ Content-Type: application/json
 ```json
 {
   "message": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   },
   "mentions": [
     "628123456789@s.whatsapp.net"
@@ -1993,7 +1993,7 @@ Content-Type: application/json
       "id": "3EB01234567890"
     },
     "message": {
-      "conversation": "Hello from WA-AKG!"
+      "conversation": "Hello from WANA!"
     },
     "messageTimestamp": "1678901234"
   }
@@ -2006,7 +2006,7 @@ Content-Type: application/json
 curl -X POST "http://localhost:3000/api/messages/sales-01/628123456789@s.whatsapp.net/send" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
-  -d '{"message":{"text":"Hello from WA-AKG!"},"mentions":["628123456789@s.whatsapp.net"]}'
+  -d '{"message":{"text":"Hello from WANA!"},"mentions":["628123456789@s.whatsapp.net"]}'
 ```
 
 ---
@@ -2075,7 +2075,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -2740,7 +2740,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -3081,7 +3081,7 @@ Content-Type: application/json
 | Field | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
 | `file` | string (binary) | ✅ Yes | — |
-| `pack` | string | No | Sticker pack name (default: WA-AKG) |
+| `pack` | string | No | Sticker pack name (default: WANA) |
 | `author` | string | No | Sticker author name (default: User) |
 | `type` | string | No | Sticker crop type (default: full) **Options:** `full`, `crop`, `circle` |
 | `quality` | integer | No | Image quality (default: 50) |
@@ -3936,7 +3936,7 @@ Fetch profile information of the connected WhatsApp account
   "success": true,
   "jid": "string",
   "status": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -4007,7 +4007,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -4080,7 +4080,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -4130,7 +4130,7 @@ curl -X PUT "http://localhost:3000/api/profile/session-01/status" \
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -4201,7 +4201,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -5024,11 +5024,11 @@ curl -X GET "http://localhost:3000/api/webhooks/session-01/abc123/logs?limit=50&
 
 ## 🔐 Webhook HMAC Verification
 
-WA-AKG signs every webhook request with HMAC-SHA256 when you set a `secret` on your webhook. Receiver **must** verify signature before processing payload.
+WANA signs every webhook request with HMAC-SHA256 when you set a `secret` on your webhook. Receiver **must** verify signature before processing payload.
 
 ### How It Works
 
-When secret set, WA-AKG sends header:
+When secret set, WANA sends header:
 
 ```
 X-Webhook-Signature: sha256=<hex-encoded-hmac>
@@ -5043,7 +5043,7 @@ Signature = HMAC-SHA256(webhook-secret, raw-request-body).
 ```javascript
 import crypto from "crypto";
 
-const WEBHOOK_SECRET = "your-webhook-secret"; // same as set in WA-AKG
+const WEBHOOK_SECRET = "your-webhook-secret"; // same as set in WANA
 
 app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
   const sig = req.headers["x-webhook-signature"];
@@ -5108,7 +5108,7 @@ import hashlib
 from flask import Flask, request, abort
 
 app = Flask(__name__)
-WEBHOOK_SECRET = b"your-webhook-secret"  # same as set in WA-AKG
+WEBHOOK_SECRET = b"your-webhook-secret"  # same as set in WANA
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
@@ -5219,7 +5219,7 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 
 ### Testing Your Webhook Receiver
 
-WA-AKG includes built-in webhook test payload. You can also trigger test event manually:
+WANA includes built-in webhook test payload. You can also trigger test event manually:
 
 ```bash
 # Create webhook with secret
@@ -5242,7 +5242,7 @@ Then send a message to a WhatsApp session. Check your server logs — should sho
 
 ## 🎯 Webhook Payload Examples
 
-When WA-AKG sends a POST to your webhook URL, the body has this structure:
+When WANA sends a POST to your webhook URL, the body has this structure:
 
 ```json
 {
@@ -5805,7 +5805,7 @@ curl -X POST "http://localhost:3000/api/user/api-key" \
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -6066,7 +6066,7 @@ curl -X GET "http://localhost:3000/api/labels/session-01" \
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -6316,7 +6316,7 @@ Get all chats associated with a specific label
 {
   "success": true,
   "label": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   },
   "chats": [
     "string"
@@ -6502,7 +6502,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -6552,7 +6552,7 @@ curl -X PATCH "http://localhost:3000/api/notifications/read" \
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -6664,7 +6664,7 @@ curl -X POST "http://localhost:3000/api/settings/system" \
 ```json
 {
   "id": "default",
-  "appName": "WA-AKG",
+  "appName": "WANA",
   "logoUrl": "https://example.com/logo.png",
   "timezone": "Asia/Jakarta"
 }
@@ -6749,7 +6749,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -6832,7 +6832,7 @@ Content-Type: application/json
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -7016,7 +7016,7 @@ curl -X POST "http://localhost:3000/api/contacts/session-01/628123456789@s.whats
   "status": true,
   "message": "Operation successful",
   "data": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   }
 }
 ```
@@ -7046,11 +7046,11 @@ curl -X POST "http://localhost:3000/api/contacts/session-01/628123456789@s.whats
   "status": "Connected",
   "userId": "string",
   "botConfig": {
-    "text": "Hello from WA-AKG!"
+    "text": "Hello from WANA!"
   },
   "webhooks": [
     {
-      "text": "Hello from WA-AKG!"
+      "text": "Hello from WANA!"
     }
   ],
   "_count": {

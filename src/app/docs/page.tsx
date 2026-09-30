@@ -6,17 +6,17 @@ import Link from 'next/link';
 import { DocsClient } from './docs-client';
 
 export const metadata = {
-    title: 'API Documentation - WA-AKG',
-    description: 'Complete API reference for WA-AKG WhatsApp Gateway. Includes endpoints for messaging, groups, contacts, media, and webhooks.',
+    title: 'API Documentation - WANA',
+    description: 'Complete API reference for WANA WhatsApp Gateway. Includes endpoints for messaging, groups, contacts, media, and webhooks.',
     openGraph: {
-        title: 'API Documentation - WA-AKG',
-        description: 'Complete API reference for WA-AKG WhatsApp Gateway.',
+        title: 'API Documentation - WANA',
+        description: 'Complete API reference for WANA WhatsApp Gateway.',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'API Documentation - WA-AKG',
-        description: 'Complete API reference for WA-AKG WhatsApp Gateway.',
+        title: 'API Documentation - WANA',
+        description: 'Complete API reference for WANA WhatsApp Gateway.',
     },
 };
 
@@ -89,7 +89,7 @@ export default async function PublicDocsPage() {
                 <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <span className="text-xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                            WA-AKG
+                            WANA
                         </span>
                         <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold tracking-wide border border-blue-200">
                             {version}

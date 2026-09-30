@@ -74,7 +74,7 @@ function LoginForm() {
             <Bot className="h-8 w-8" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome Back</h1>
-          <p className="text-muted-foreground mt-2">Sign in to your WA-AKG account</p>
+          <p className="text-muted-foreground mt-2">Sign in to your WANA account</p>
         </div>
 
         <div className="glass-panel rounded-3xl p-8 shadow-2xl shadow-black/5 dark:shadow-black/40">

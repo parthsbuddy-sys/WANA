@@ -1,6 +1,6 @@
-# 📖 WA-AKG User Manual
+# 📖 WANA User Manual
 
-Welcome to the **WA-AKG** User Guide. This document provides step-by-step instructions on how to use the dashboard features effectively.
+Welcome to the **WANA** User Guide. This document provides step-by-step instructions on how to use the dashboard features effectively.
 
 ---
 
@@ -41,7 +41,25 @@ Before you can use any automation features, you must link a WhatsApp account.
 
 ---
 
-## 📢 Mass Communication
+## 🤖 AI Agent Features
+
+### 1. Custom AI Filter
+The Custom AI Filter allows you to create natural language rules to control when the AI agent responds to messages.
+
+**How it works:**
+- Navigate to Bot Settings > AI Agent Configuration
+- Enable "Custom Filter Prompt" and disable "AI Enabled" (for filter-only mode)
+- Write your filter rules in plain English (e.g., "Only respond to messages about pricing and product information from existing customers")
+- The AI will evaluate each incoming message against your rules and only process messages that match
+
+**Example filter prompts:**
+- "Only allow messages that are questions about our services"
+- "Ignore promotional content and spam"
+- "Only respond to messages from known customers (check sender ID against customer list)"
+- "Allow urgent support requests but ignore general inquiries"
+
+### 2. Smart Backend AI Agent
+When AI Enabled is turned on, the AI agent provides intelligent responses to private messages using context-aware conversations.
 
 ### 1. Broadcast Engine
 - Send bulk messages to multiple numbers or groups.
@@ -87,5 +105,5 @@ Check the **Settings** page to customize:
 
 ---
 <div align="center">
-  **Version**: 1.6.1 | **Support**: [GitHub Issues](https://github.com/mrifqidaffaaditya/WA-AKG/issues)
+  **Version**: 1.6.1 | **Support**: [GitHub Issues](https://github.com/mspark/WANA/issues)
 </div>

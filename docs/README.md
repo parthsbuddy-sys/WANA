@@ -1,6 +1,6 @@
 # 📂 Knowledge Base Index
 
-Welcome to the internal documentation portal for **WA-AKG**. Use the links below to navigate the technical and user-facing guides.
+Welcome to the internal documentation portal for **WANA**. Use the links below to navigate the technical and user-facing guides.
 
 ---
 
