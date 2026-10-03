@@ -1,3 +1,4 @@
+
 import { prisma } from "@/lib/prisma";
 import type { WASocket, WAMessage, Contact } from "@whiskeysockets/baileys";
 import { normalizeMessageContent } from "@whiskeysockets/baileys";
@@ -58,9 +59,16 @@ export const bindSessionStore = (sock: WASocket, sessionId: string, io: Server |
 
         for (const msg of messages) {
             try {
-                // Auto Read Logic
+                // Auto Read Logic with Humanized Reading Delay (1.0s - 1.8s jitter)
                 if (type === 'notify' && (config as any)?.autoRead && !msg.key.fromMe) {
-                    await sock.readMessages([msg.key]);
+                    const readDelay = Math.floor(1000 + Math.random() * 800);
+                    setTimeout(async () => {
+                        try {
+                            await sock.readMessages([msg.key]);
+                        } catch (err) {
+                            /* ignore silent read errors */
+                        }
+                    }, readDelay);
                 }
 
                 const savedMessage = await processAndSaveMessage(msg, dbSessionId, sessionId, type === 'notify', sock, config, io);
@@ -71,7 +79,7 @@ export const bindSessionStore = (sock: WASocket, sessionId: string, io: Server |
                 // Execute Bot Commands (Only for Notify / New Messages)
                 if (type === 'notify' && savedMessage) {
                     // Run in background, don't await strictly to not block saving
-                    // handleBotCommand(sock, sessionId, msg).catch(e => logger.error("Bot", "Bot Handler Error", e));
+                    handleBotCommand(sock, sessionId, msg).catch(e => logger.error("Bot", "Bot Handler Error", e));
                 }
             } catch (error) {
                 logger.error("Store", "Error saving message", error);
@@ -542,9 +550,20 @@ async function processAndSaveMessage(
                 } : {}
             });
 
-            // Welcome Message Logic (DISABLED)
-            // if (false) {
-            // }
+            // Welcome Message Logic (Sent once on first incoming message from contact)
+            if (config?.welcomeMessage && !fromMe && triggerWebhook && sock) {
+                try {
+                    const messageCount = await prisma.message.count({
+                        where: { sessionId: dbSessionId, remoteJid: contactJid }
+                    });
+                    if (messageCount === 1) {
+                        sock.sendMessage(contactJid, { text: config.welcomeMessage })
+                            .catch(e => logger.error("Bot", "Failed to send welcome message:", e));
+                    }
+                } catch (welcomeErr) {
+                    logger.error("Bot", "Error in welcome message logic:", welcomeErr);
+                }
+            }
         }
 
         // Trigger webhook for new messages only (not history sync)

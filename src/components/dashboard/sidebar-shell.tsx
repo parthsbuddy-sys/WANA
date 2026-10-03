@@ -5,6 +5,7 @@ import { useSidebar } from "./sidebar-context";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { WinaLogo } from "@/components/ui/wina-logo";
 
 interface SidebarShellProps {
     appName: string;
@@ -27,20 +28,30 @@ export function SidebarShell({ appName, userName, userEmail, version }: SidebarS
             `}
         >
             {/* Logo / Brand */}
-            <div className={`border-b border-border/30 transition-all duration-300 ${isCollapsed ? "px-3 py-4" : "px-5 py-5"}`}>
+            <div className={`border-b border-border/30 transition-all duration-300 ${isCollapsed ? "px-3 py-4" : "px-5 py-4"}`}>
                 {isCollapsed ? (
                     <div className="flex justify-center">
-                        <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                            {appName.charAt(0)}
+                        <div className="h-10 w-10 flex items-center justify-center drop-shadow-md">
+                            <WinaLogo size={36} idPrefix="sidebar-collapsed" />
                         </div>
                     </div>
                 ) : (
-                    <>
-                        <h1 className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
-                            {appName}
-                        </h1>
-                        <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">WhatsApp Gateway</p>
-                    </>
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 flex items-center justify-center drop-shadow-md flex-shrink-0">
+                            <WinaLogo size={38} idPrefix="sidebar-full" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5">
+                                <h1 className="text-lg font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-primary to-teal-300">
+                                    {appName || "WINA"}
+                                </h1>
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+                                    PRO
+                                </span>
+                            </div>
+                            <p className="text-[10px] text-muted-foreground font-medium truncate">WhatsApp Intelligent Next-gen Agent</p>
+                        </div>
+                    </div>
                 )}
             </div>
 

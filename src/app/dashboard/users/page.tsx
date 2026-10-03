@@ -130,8 +130,19 @@ export default function UsersPage() {
 
     if (loading) return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
 
-    // TODO: Improve RBAC check here if strictly needed, but API protects it.
-    // If empty list and not loading, likely unauthorized or empty.
+    if (session?.user?.role !== "SUPERADMIN") {
+        return (
+            <div className="flex h-[70vh] items-center justify-center">
+                <div className="text-center space-y-4">
+                    <ShieldAlert className="mx-auto h-12 w-12 text-red-500/60" />
+                    <h2 className="text-xl font-bold">Access Restricted</h2>
+                    <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+                        User and role management is exclusively available to Super Administrators.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">

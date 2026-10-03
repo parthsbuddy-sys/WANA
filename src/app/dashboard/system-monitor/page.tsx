@@ -158,7 +158,7 @@ export default function SystemMonitorPage() {
                         <div className="text-2xl font-bold">{formatBytes(data.process.rss)}</div>
                         <Progress value={processMemPercent} className="h-2 mt-3" indicatorClassName="bg-green-500" />
                         <p className="text-xs text-muted-foreground mt-2">
-                            Uptime: {formatUptime(data.process.uptime)} ΓÇö Heap: {formatBytes(data.process.heapUsed)}
+                            Uptime: {formatUptime(data.process.uptime)} — Heap: {formatBytes(data.process.heapUsed)}
                         </p>
                     </CardContent>
                 </Card>
@@ -170,11 +170,11 @@ export default function SystemMonitorPage() {
                     <CardContent>
                         <div className="text-2xl font-bold space-y-1 mt-1">
                             <div className="flex items-center text-sm">
-                                <span className="text-blue-500 font-bold w-10">Γåô RX</span>
+                                <span className="text-blue-500 font-bold w-10">↓ RX</span>
                                 <span>{formatBytes(data.network[0]?.rx_sec || 0)}/s</span>
                             </div>
                             <div className="flex items-center text-sm">
-                                <span className="text-green-500 font-bold w-10">Γåæ TX</span>
+                                <span className="text-green-500 font-bold w-10">↑ TX</span>
                                 <span>{formatBytes(data.network[0]?.tx_sec || 0)}/s</span>
                             </div>
                         </div>

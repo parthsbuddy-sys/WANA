@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
+import { waManager } from "@/modules/whatsapp/manager";
+import { antispam } from "@/modules/whatsapp/antispam";
 
 export async function GET(
     request: NextRequest,
@@ -41,24 +43,29 @@ export async function GET(
             enableSticker: true,
             enablePing: true,
             enableUptime: true,
-            botName: "WA-AKG Bot",
+            botName: "WINA Agent",
             removeBgApiKey: null,
             enableVideoSticker: true,
             maxStickerDuration: 10,
             prefix: "#",
-            antiSpamEnabled: false,
-            spamLimit: 5,
-            spamInterval: 10,
-            spamDelayMin: 1000,
-            spamDelayMax: 3000,
+            antiSpamEnabled: true,
+            spamLimit: 1,
+            spamInterval: 60,
+            spamDelayMin: 4000,
+            spamDelayMax: 10000,
             welcomeMessage: null,
             autoRead: false,
-            alwaysOnline: false
+            alwaysOnline: false,
+            aiEnabled: false,
+            aiApiKey: null,
+            aiModel: "qwen/qwen3.8-27b",
+            aiPrompt: null,
+            customFilterPrompt: null,
         };
 
-        return NextResponse.json({ status: true, message: "Bot config fetched successfully", data: session.botConfig });
+        return NextResponse.json({ status: true, message: "Agent config fetched successfully", data: session.botConfig });
     } catch (error) {
-        console.error("Get Bot Config Error:", error);
+        console.error("Get Agent Config Error:", error);
         return NextResponse.json({ status: false, message: "Internal Server Error", error: "Internal Server Error" }, { status: 500 });
     }
 }
@@ -92,6 +99,7 @@ export async function POST(
             where: { sessionId: session.id },
             create: {
                 sessionId: session.id,
+                botName: body.botName || "WINA Agent",
                 enabled: body.enabled ?? true,
                 botMode: body.botMode || 'OWNER',
                 botAllowedJids: body.botAllowedJids || [],
@@ -107,16 +115,22 @@ export async function POST(
                 enableUptime: body.enableUptime ?? true,
                 removeBgApiKey: body.removeBgApiKey || null,
                 prefix: body.prefix || "#",
-                antiSpamEnabled: body.antiSpamEnabled ?? false,
-                spamLimit: body.spamLimit || 5,
-                spamInterval: body.spamInterval || 10,
-                spamDelayMin: body.spamDelayMin || 1000,
-                spamDelayMax: body.spamDelayMax || 3000,
+                antiSpamEnabled: body.antiSpamEnabled ?? true,
+                spamLimit: body.spamLimit || 1,
+                spamInterval: body.spamInterval || 60,
+                spamDelayMin: body.spamDelayMin || 4000,
+                spamDelayMax: body.spamDelayMax || 10000,
                 welcomeMessage: body.welcomeMessage || null,
                 autoRead: body.autoRead ?? false,
                 alwaysOnline: body.alwaysOnline ?? false,
+                aiEnabled: body.aiEnabled ?? false,
+                aiApiKey: body.aiApiKey || null,
+                aiModel: body.aiModel || "qwen/qwen3.8-27b",
+                aiPrompt: body.aiPrompt || null,
+                customFilterPrompt: body.customFilterPrompt || null,
             },
             update: {
+                enabled: body.enabled !== undefined ? body.enabled : undefined,
                 botMode: body.botMode,
                 botAllowedJids: body.botAllowedJids,
                 botBlockedJids: body.botBlockedJids,
@@ -139,10 +153,26 @@ export async function POST(
                 welcomeMessage: body.welcomeMessage,
                 autoRead: body.autoRead,
                 alwaysOnline: body.alwaysOnline,
+                aiEnabled: body.aiEnabled,
+                aiApiKey: body.aiApiKey,
+                aiModel: body.aiModel,
+                aiPrompt: body.aiPrompt,
+                customFilterPrompt: body.customFilterPrompt,
             }
         });
 
-        return NextResponse.json({ status: true, message: "Bot config updated successfully", data: config });
+        // 1. Immediately invalidate antispam config cache
+        antispam.clearCache(sessionId);
+
+        // 2. Real-time presence update if instance is active
+        const instance = waManager.getInstance(sessionId);
+        if (instance && instance.socket) {
+            if (body.alwaysOnline !== undefined) {
+                instance.socket.sendPresenceUpdate(body.alwaysOnline ? 'available' : 'unavailable').catch(() => {});
+            }
+        }
+
+        return NextResponse.json({ status: true, message: "Agent config updated successfully", data: config });
     } catch (error) {
         console.error("Update Bot Config Error:", error);
         return NextResponse.json({ status: false, message: "Failed to update config", error: "Failed to update config" }, { status: 500 });

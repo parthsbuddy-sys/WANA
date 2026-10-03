@@ -15,8 +15,7 @@ const execAsync = promisify(exec);
 // Map to track start times for uptime
 const startTimes = new Map<string, number>();
 
-// Default bot config
-// Default bot config
+// Default agent config
 const DEFAULT_CONFIG = {
     enabled: true,
     botMode: 'OWNER',
@@ -28,7 +27,7 @@ const DEFAULT_CONFIG = {
     maxStickerDuration: 10,
     enablePing: true,
     enableUptime: true,
-    botName: "WA-AKG Bot",
+    botName: "WINA Agent",
     prefix: "#",
     removeBgApiKey: null as string | null
 };
@@ -138,6 +137,28 @@ export async function handleBotCommand(
     const [command, ...args] = text.trim().split(" ");
     const cmd = command.toLowerCase().slice(prefix.length); // remove prefix
 
+    // List of known commands
+    const validCommands = ["ping", "id", "uptime", "sticker", "s", "stiker", "menu", "help"];
+    if (!validCommands.includes(cmd)) return;
+
+    // Simulate natural read and typing presence only for valid commands
+    if (!fromMe) {
+        try {
+            const readDelay = Math.floor(1000 + Math.random() * 800); // 1.0s - 1.8s
+            await new Promise(r => setTimeout(r, readDelay));
+            try {
+                await sock.readMessages([msg.key]);
+            } catch (readErr) { /* ignore */ }
+
+            await sock.sendPresenceUpdate('composing', remoteJid);
+            const typingDelay = Math.floor(1000 + Math.random() * 800); // 1.0s - 1.8s
+            await new Promise(r => setTimeout(r, typingDelay));
+            await sock.sendPresenceUpdate('paused', remoteJid);
+        } catch (presenceErr) {
+            /* ignore */
+        }
+    }
+
     try {
         switch (cmd) {
             case "ping": {
@@ -205,7 +226,7 @@ export async function handleBotCommand(
                 // Handle Video Limits
                 if (isVideo) {
                     if (!(config as any).enableVideoSticker) {
-                        await sock.sendMessage(remoteJid, { text: "❌ Video stickers are disabled in bot settings." }, { quoted: msg });
+                        await sock.sendMessage(remoteJid, { text: "❌ Video stickers are disabled in agent settings." }, { quoted: msg });
                         return;
                     }
 
@@ -306,8 +327,8 @@ export async function handleBotCommand(
 
                     // Convert
                     const sticker = new Sticker(buffer as Buffer, {
-                        pack: (config as any).botName || "WA-AKG Bot",
-                        author: "By " + ((config as any).botName || "WA-AKG Bot"),
+                        pack: (config as any).botName || "WINA Agent",
+                        author: "By " + ((config as any).botName || "WINA Agent"),
                         type: "full", // full, crop, circle
                         quality: 15 // Extreme quality reduction for size
                     });
@@ -327,7 +348,7 @@ export async function handleBotCommand(
 
             case "menu":
             case "help": {
-                const botName = (config as any).botName || "WA-AKG Bot";
+                const botName = (config as any).botName || "WINA Agent";
                 const menu = `
 🤖 *${botName} Menu* 🤖
 
@@ -335,7 +356,7 @@ export async function handleBotCommand(
 • *${prefix}sticker* / *${prefix}s*: Convert Image/Video to Sticker
   - Supports Images, GIFs, and Videos (max ${(config as any).maxStickerDuration || 10}s)
   - Use *${prefix}sticker nobg* to remove background (Images only)
-• *${prefix}ping*: Check Bot Status
+• *${prefix}ping*: Check Agent Status
 • *${prefix}uptime*: Check Session Uptime
 • *${prefix}id*: Get Chat ID
 

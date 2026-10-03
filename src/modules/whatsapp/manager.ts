@@ -80,7 +80,12 @@ export class WhatsAppManager {
                     create: {
                         enabled: true,
                         botMode: "OWNER",
-                        autoReplyMode: "ALL"
+                        autoReplyMode: "ALL",
+                        antiSpamEnabled: true,
+                        spamLimit: 1,
+                        spamInterval: 60,
+                        spamDelayMin: 4000,
+                        spamDelayMax: 10000
                     }
                 }
             }
@@ -93,6 +98,20 @@ export class WhatsAppManager {
 
     public getInstance(sessionId: string) {
         return this.sessions.get(sessionId);
+    }
+
+    public getAllActiveSessions() {
+        const list: { sessionId: string; status: string; hasSocket: boolean; startTime: Date | null; userId: string }[] = [];
+        this.sessions.forEach((inst, sessionId) => {
+            list.push({
+                sessionId,
+                status: inst.status,
+                hasSocket: !!inst.socket,
+                startTime: inst.startTime,
+                userId: inst.userId
+            });
+        });
+        return list;
     }
 
     /** Remove instance from memory manager (cleanup after stop/logout) */

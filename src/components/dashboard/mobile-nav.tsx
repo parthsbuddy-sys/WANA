@@ -27,9 +27,11 @@ import {
     Tag,
     MessageCircleReply,
     UserPlus,
+    TrendingUp,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { WinaLogo } from "@/components/ui/wina-logo";
 import pkg from "../../../package.json";
 
 interface NavGroup {
@@ -65,9 +67,9 @@ const navGroups: NavGroup[] = [
     {
         label: "Automation",
         items: [
-            { href: "/dashboard/bot-settings", label: "Bot Settings", icon: Bot },
+            { href: "/dashboard/bot-settings", label: "Agent Settings", icon: Bot },
             { href: "/dashboard/autoreply", label: "Auto Reply", icon: MessageCircleReply },
-            { href: "/dashboard/profile", label: "Bot Profile", icon: UserCircle },
+            { href: "/dashboard/profile", label: "Agent Profile", icon: UserCircle },
             { href: "/dashboard/scheduler", label: "Scheduler", icon: CalendarClock },
             { href: "/dashboard/webhooks", label: "Webhooks & API", icon: Webhook },
         ],
@@ -75,24 +77,25 @@ const navGroups: NavGroup[] = [
     {
         label: "Developer",
         items: [
-            { href: "/docs", label: "API Docs", icon: FileText },
-            { href: "/swagger", label: "Swagger UI", icon: Code, external: true },
+            { href: "/docs", label: "API Docs", icon: FileText, superadminOnly: true },
+            { href: "/swagger", label: "Swagger UI", icon: Code, external: true, superadminOnly: true },
         ],
     },
     {
         label: "Administration",
         items: [
+            { href: "/dashboard/analytics", label: "Analytics & Telemetry", icon: TrendingUp, superadminOnly: true },
             { href: "/dashboard/media", label: "Media Manager", icon: HardDrive },
             { href: "/dashboard/sessions/access", label: "Session Access", icon: UserPlus },
-            { href: "/dashboard/users", label: "Users", icon: Users },
-            { href: "/dashboard/settings", label: "Settings", icon: Settings },
+            { href: "/dashboard/users", label: "User Management", icon: Users, superadminOnly: true },
+            { href: "/dashboard/settings", label: "System Settings", icon: Settings, superadminOnly: true },
             { href: "/dashboard/system-monitor", label: "System Monitor", icon: Activity, superadminOnly: true },
-            { href: "/dashboard/notifications", label: "Notifications", icon: Bell, superadminOnly: true },
+            { href: "/dashboard/notifications", label: "Broadcast Alerts", icon: Bell, superadminOnly: true },
         ],
     },
 ];
 
-export function MobileNav({ appName = "WANA" }: { appName?: string }) {
+export function MobileNav({ appName = "WINA" }: { appName?: string }) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
     const { data: session } = useSession();
@@ -111,10 +114,24 @@ export function MobileNav({ appName = "WANA" }: { appName?: string }) {
                     <Menu className="h-5 w-5" />
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[85vw] sm:w-[320px] p-0 flex flex-col">
-                <SheetHeader className="px-5 py-4 text-left border-b border-slate-100">
-                    <SheetTitle className="text-xl font-bold text-slate-800">{appName}</SheetTitle>
-                    <SheetDescription className="text-[11px] text-slate-400 -mt-1">WhatsApp Gateway</SheetDescription>
+            <SheetContent side="left" className="w-[85vw] sm:w-[320px] p-0 flex flex-col glass-panel border-r border-border/50">
+                <SheetHeader className="px-5 py-4 text-left border-b border-border/40">
+                    <div className="flex items-center gap-3">
+                        <div className="h-9 w-9 flex items-center justify-center drop-shadow-md flex-shrink-0">
+                            <WinaLogo size={34} idPrefix="mobilenav" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-1.5">
+                                <SheetTitle className="text-lg font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-primary to-teal-300">
+                                    {appName}
+                                </SheetTitle>
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20">
+                                    PRO
+                                </span>
+                            </div>
+                            <SheetDescription className="text-[10px] text-muted-foreground font-medium -mt-0.5">WhatsApp Intelligent Next-gen Agent</SheetDescription>
+                        </div>
+                    </div>
                 </SheetHeader>
 
                 <nav className="flex-1 px-3 py-3 overflow-y-auto space-y-1">

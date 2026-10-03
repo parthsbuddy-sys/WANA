@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 export default function ApiDocsPage() {
+    const { data: session, status } = useSession();
     const [authorized, setAuthorized] = useState(false);
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState("");
@@ -23,6 +25,15 @@ export default function ApiDocsPage() {
             originalWarn(...args);
         };
 
+        if (status === "loading") return;
+
+        // Auto-authorize if user is logged in as SUPERADMIN
+        if (session?.user && (session.user as any).role === "SUPERADMIN") {
+            setAuthorized(true);
+            setLoading(false);
+            return;
+        }
+
         // Check if already authorized via session storage
         const isAuth = sessionStorage.getItem("swagger_auth") === "true";
         if (isAuth) {
@@ -33,21 +44,27 @@ export default function ApiDocsPage() {
         return () => {
             console.warn = originalWarn;
         };
-    }, []);
+    }, [session, status]);
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Basic auth - compare with env variables or hardcoded (for demo)
-        const validUsername = process.env.NEXT_PUBLIC_SWAGGER_USERNAME || "admin";
-        const validPassword = process.env.NEXT_PUBLIC_SWAGGER_PASSWORD || "admin123";
+        const inputUser = username.trim().toLowerCase();
+        const inputPass = password.trim();
 
-        if (username === validUsername && password === validPassword) {
+        const validUsername = (process.env.NEXT_PUBLIC_SWAGGER_USERNAME || "").trim().toLowerCase();
+        const validPassword = (process.env.NEXT_PUBLIC_SWAGGER_PASSWORD || "").trim();
+
+        // Validate against configured env credentials or active SuperAdmin credentials
+        const isEnvValid = validUsername && validPassword && inputUser === validUsername && inputPass === validPassword;
+        const isSuperAdminValid = inputUser === "katkarparth6494@gmail.com" && inputPass === "WINA6494_parth@00713";
+
+        if (isEnvValid || isSuperAdminValid) {
             sessionStorage.setItem("swagger_auth", "true");
             setAuthorized(true);
             setError("");
         } else {
-            setError("Invalid credentials");
+            setError("Invalid SuperAdmin credentials.");
         }
     };
 
@@ -72,7 +89,7 @@ export default function ApiDocsPage() {
                 <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
                     <div className="text-center mb-6">
                         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                            WANA API Documentation
+                            WINA API Documentation
                         </h1>
                         <p className="text-gray-600 text-sm">
                             Please authenticate to access Swagger UI
@@ -122,11 +139,10 @@ export default function ApiDocsPage() {
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center text-sm text-gray-500">
-                        <p>Default credentials:</p>
-                        <p className="font-mono mt-1">
-                            Username: <span className="font-semibold">admin</span> |
-                            Password: <span className="font-semibold">admin123</span>
+                    <div className="mt-6 text-center text-xs text-slate-500">
+                        <p className="flex items-center justify-center gap-1.5 font-medium">
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            Protected SuperAdmin API Documentation Endpoint
                         </p>
                     </div>
                 </div>
@@ -139,7 +155,7 @@ export default function ApiDocsPage() {
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 shadow-lg">
                 <div className="container mx-auto flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold">WANA API Documentation</h1>
+                        <h1 className="text-2xl font-bold">WINA API Documentation</h1>
                         <p className="text-blue-100 text-sm mt-1">
                             Interactive API documentation with 58+ endpoints
                         </p>

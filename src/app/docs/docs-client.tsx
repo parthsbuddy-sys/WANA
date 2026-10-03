@@ -302,7 +302,7 @@ export function DocsClient({ content, toc }: DocsClientProps) {
                 </article>
 
                 <footer className="mt-20 pt-8 border-t text-center text-sm text-gray-400">
-                    <p>© {new Date().getFullYear()} WANA. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} WINA. WhatsApp Intelligent Next-gen Agent.</p>
                 </footer>
             </main>
         </div>

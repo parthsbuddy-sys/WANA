@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const APP_DESCRIPTION = "Self-hosted WhatsApp Gateway with Multi-device support, Auto-replies, API integration, and session management dashboard.";
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wa-akg.app";
+const APP_DESCRIPTION = "WhatsApp Intelligent Next-gen Agent (WINA) — Self-hosted WhatsApp Gateway with Multi-device support, AI Auto-replies, Anti-Ban Protection, and Session Management.";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wina.app";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  let appName = "WANA";
+  let appName = "WINA";
   try {
     // @ts-ignore
     const config = await prisma.systemConfig.findUnique({ where: { id: "default" } });
@@ -37,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to fetch system config for metadata:", e);
   }
 
-  const appDefaultTitle = `${appName} | Premium WhatsApp Gateway`;
+  const appDefaultTitle = `${appName} | WhatsApp Intelligent Next-gen Agent`;
 
   return {
     metadataBase: new URL(APP_URL),
@@ -47,9 +47,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: APP_DESCRIPTION,
     applicationName: appName,
+    icons: {
+      icon: "/logo.svg",
+      shortcut: "/favicon.svg",
+      apple: "/logo.svg",
+    },
     generator: "Next.js",
     keywords: [
-      "whatsapp gateway", "whatsapp api", "whatsapp bot", "whatsapp management",
+      "whatsapp gateway", "whatsapp api", "whatsapp agent", "whatsapp management",
       "self-hosted", "wa gateway", "whatsapp multi-device", "auto-reply",
       "whatsapp dashboard", "whatsapp web api"
     ],

@@ -16,8 +16,9 @@ import { bindAutoReply } from "./store/autoreply";
 import { bindPpGuard } from "./store/ppguard";
 import { antispam } from "./antispam";
 import { logger } from "@/lib/logger";
+import { notifySessionOwner } from "@/lib/notifications";
 
-const MAX_RECONNECT_ATTEMPTS = 3;
+const MAX_RECONNECT_ATTEMPTS = 5;
 
 export class WhatsAppInstance {
     socket: WASocket | null = null;
@@ -57,6 +58,25 @@ export class WhatsAppInstance {
         const { state, saveCreds } = await usePrismaAuthState(this.sessionId);
         const { version } = await fetchLatestBaileysVersion();
 
+        // Tier 2: Static Residential Proxy Support (SOCKS5 / HTTP)
+        let agent: any = undefined;
+        const proxyUrl = (this.config as any)?.proxyUrl || process.env.PROXY_URL || process.env.SOCKS_PROXY || process.env.HTTP_PROXY;
+        if (proxyUrl) {
+            try {
+                if (proxyUrl.startsWith("socks5://") || proxyUrl.startsWith("socks://") || proxyUrl.startsWith("socks4://")) {
+                    const { SocksProxyAgent } = require("socks-proxy-agent");
+                    agent = new SocksProxyAgent(proxyUrl);
+                    logger.info("Instance", `🛡️ Using SOCKS Residential Proxy for session ${this.sessionId}`);
+                } else {
+                    const { HttpsProxyAgent } = require("https-proxy-agent");
+                    agent = new HttpsProxyAgent(proxyUrl);
+                    logger.info("Instance", `🛡️ Using HTTP/HTTPS Residential Proxy for session ${this.sessionId}`);
+                }
+            } catch (proxyErr) {
+                logger.error("Instance", `Failed to initialize proxy agent for ${proxyUrl}:`, proxyErr);
+            }
+        }
+
         this.socket = makeWASocket({
             version,
             logger: pino({ level: process.env.BAILEYS_LOG_LEVEL || "error" }) as any,
@@ -68,6 +88,8 @@ export class WhatsAppInstance {
             browser: ["Ubuntu", "Chrome", "20.0.04"],
             markOnlineOnConnect: botConfig?.alwaysOnline ?? true,
             syncFullHistory: true,
+            agent,
+            fetchAgent: agent,
         });
 
         // Apply Anti-Spam Wrapper to sendMessage
@@ -122,6 +144,16 @@ export class WhatsAppInstance {
                     this.io?.to(this.sessionId).emit("connection.update", { status: "LOGGED_OUT", qr: null });
 
                     logger.info("Instance", `Session ${this.sessionId} logged out. Deleting credentials...`);
+                    
+                    // Dispatch Real Inbox & Email Notification to Owner
+                    notifySessionOwner(this.sessionId, {
+                        title: "🚨 WhatsApp Session Logged Out",
+                        message: `Your WhatsApp session "${this.sessionId}" has been disconnected or unlinked from the phone. Please open Sessions to re-link.`,
+                        type: "WARNING",
+                        href: "/dashboard/sessions",
+                        sendEmailAlert: true
+                    }).catch(() => {});
+
                     try {
                         await prisma.$transaction([
                             prisma.session.update({
@@ -171,12 +203,18 @@ export class WhatsAppInstance {
                         data: { status: "DISCONNECTED", qr: null }
                     }).catch(() => {});
 
+                    // Tier 2: Exponential Backoff with Jitter (prevents reconnect storms & auth bans)
+                    const backoffDelay = Math.min(
+                        Math.round(5000 * Math.pow(1.8, this.reconnectCount - 1) + Math.random() * 2000),
+                        60000
+                    );
+
                     logger.warn("Instance",
-                        `Session ${this.sessionId} disconnected. Reconnecting (${this.reconnectCount}/${MAX_RECONNECT_ATTEMPTS})...`
+                        `Session ${this.sessionId} disconnected (Code: ${code || 'unknown'}). Backing off and reconnecting in ${Math.round(backoffDelay / 1000)}s (${this.reconnectCount}/${MAX_RECONNECT_ATTEMPTS})...`
                     );
                     setTimeout(() => {
                         if (!this.isStopped) this.init();
-                    }, 3000);
+                    }, backoffDelay);
                 } else {
                     // Max retries exceeded — auto-stop
                     this.status = "STOPPED";
@@ -184,6 +222,15 @@ export class WhatsAppInstance {
                     this.reconnectCount = 0;
                     this.isStopped = true; // prevent further retries
                     this.io?.to(this.sessionId).emit("connection.update", { status: "STOPPED", qr: null });
+
+                    // Dispatch Real Inbox & Email Notification to Owner
+                    notifySessionOwner(this.sessionId, {
+                        title: "⚠️ WhatsApp Session Connection Stalled",
+                        message: `Session "${this.sessionId}" exceeded maximum automatic reconnect attempts. Please check network connectivity and restart the session from the dashboard.`,
+                        type: "WARNING",
+                        href: "/dashboard/sessions",
+                        sendEmailAlert: true
+                    }).catch(() => {});
 
                     await prisma.session.update({
                         where: { sessionId: this.sessionId },
@@ -208,13 +255,21 @@ export class WhatsAppInstance {
 
                 this.io?.to(this.sessionId).emit("connection.update", { status: "CONNECTED", qr: null });
 
+                // Dispatch Real Inbox Notification to Owner
+                notifySessionOwner(this.sessionId, {
+                    title: "✅ WhatsApp Session Connected",
+                    message: `Session "${this.sessionId}" is online and ready for automated messaging.`,
+                    type: "SUCCESS",
+                    href: "/dashboard/sessions"
+                }).catch(() => {});
+
                 try {
                     await syncGroups(this.socket as WASocket, this.sessionId);
                 } catch (e) {
                     logger.error("Instance", "Group sync failed:", e);
                 }
 
-                // bindAutoReply(this.socket as WASocket, this.sessionId);
+                bindAutoReply(this.socket as WASocket, this.sessionId);
                 bindPpGuard(this.socket as WASocket, this.sessionId);
 
                 await prisma.session.update({

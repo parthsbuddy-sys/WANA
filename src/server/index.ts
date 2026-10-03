@@ -64,11 +64,11 @@ app.prepare().then(() => {
   server.listen(port, () => {
     logger.banner(pkg.name.toUpperCase(), pkg.version, port);
 
-    // --- WANA Monitor Heartbeat ---
+    // --- WINA Monitor Heartbeat ---
     // Sends a ping every 30 seconds to the monitoring server
     const MONITOR_URL = process.env.MONITOR_URL || "";
     const APP_URL = process.env.BASE_URL || `http://${hostname}:${port}`;
-    const APP_NAME = process.env.APP_NAME || "WANA";
+    const APP_NAME = process.env.APP_NAME || "WINA";
 
     const sendHeartbeat = async () => {
       if (!MONITOR_URL) return;

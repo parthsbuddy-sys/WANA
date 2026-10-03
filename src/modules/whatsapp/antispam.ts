@@ -226,11 +226,11 @@ class AntiSpamManager {
 
             const row = session.botConfig;
             const config: AntiSpamConfig = {
-                antiSpamEnabled: Boolean(row.antiSpamEnabled),
-                spamLimit: Number(row.spamLimit) || 5,
-                spamInterval: Number(row.spamInterval) || 10,
-                spamDelayMin: Number(row.spamDelayMin) || 1000,
-                spamDelayMax: Number(row.spamDelayMax) || 3000,
+                antiSpamEnabled: row.antiSpamEnabled !== undefined ? Boolean(row.antiSpamEnabled) : true,
+                spamLimit: Number(row.spamLimit) || 1,
+                spamInterval: Number(row.spamInterval) || 60,
+                spamDelayMin: Number(row.spamDelayMin) || 4000,
+                spamDelayMax: Number(row.spamDelayMax) || 10000,
             };
 
             this.configCache.set(sessionId, { config, cachedAt: Date.now() });

@@ -5,11 +5,15 @@ import { getCookie, setCookie } from "@/lib/client-cookie";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-interface Session {
+export interface Session {
     id: string;
     sessionId: string;
     name: string;
     status: string;
+    user?: {
+        name: string | null;
+        email: string;
+    } | null;
 }
 
 interface SessionContextType {
@@ -33,27 +37,30 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             const res = await fetch('/api/sessions');
             if (res.ok) {
                 const responseData = await res.json();
-                const data = responseData?.data || [];
-                // Filter connected only? Or showing all but disabled?
-                // Logic: Only show CONNECTED in selector for "Active" operations.
-                // Show all sessions so users can manage disconnected ones (e.g. webhooks, settings)
+                const data: Session[] = responseData?.data || [];
                 setSessions(data);
 
-                // Sync with cookie
-                const cookieId = getCookie("sessionId");
-                if (cookieId && data.find((s: Session) => s.sessionId === cookieId)) {
+                // Sync with cookie or localStorage
+                const localId = typeof window !== "undefined" ? window.localStorage.getItem("selected_sessionId") : null;
+                const cookieId = getCookie("sessionId") || localId;
+                
+                if (cookieId && data.some((s) => s.sessionId === cookieId)) {
                     setSessionIdState(cookieId);
+                    setCookie("sessionId", cookieId);
                 } else if (data.length > 0) {
-                    // Default to first
+                    // Default to first available session
                     const first = data[0].sessionId;
                     setSessionIdState(first);
                     setCookie("sessionId", first);
+                    if (typeof window !== "undefined") {
+                        window.localStorage.setItem("selected_sessionId", first);
+                    }
                 } else {
                     setSessionIdState("");
                 }
             }
         } catch (error) {
-            console.error(error);
+            console.error("Failed to fetch sessions:", error);
             toast.error("Failed to fetch sessions");
         } finally {
             setLoading(false);
@@ -65,8 +72,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const setSessionId = (id: string) => {
+        if (!id) return;
         setSessionIdState(id);
-        setCookie("sessionId", id); // Sync Cookie
+        setCookie("sessionId", id); // Sync Cookie for SSR
+        if (typeof window !== "undefined") {
+            window.localStorage.setItem("selected_sessionId", id);
+            window.dispatchEvent(new CustomEvent("session:changed", { detail: id }));
+        }
         router.refresh(); // Sync Server Components
     };
 

@@ -35,13 +35,18 @@ export async function POST(
     }
 
     // Verify webhook access
+    const isSuperAdmin = user.role === "SUPERADMIN";
     const webhook = await prisma.webhook.findFirst({
         where: {
             id,
-            OR: [
-                { sessionId: session.id },
-                { sessionId: null, userId: user.id }
-            ]
+            ...(isSuperAdmin
+                ? {}
+                : {
+                    OR: [
+                        { sessionId: session.id },
+                        { sessionId: null, userId: user.id }
+                    ]
+                })
         }
     });
 

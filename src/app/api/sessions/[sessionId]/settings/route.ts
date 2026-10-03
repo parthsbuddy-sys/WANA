@@ -59,15 +59,22 @@ export async function PATCH(
         const body = await request.json();
         const { config } = body;
 
+        const currentSession = await prisma.session.findUnique({
+            where: { sessionId },
+            select: { config: true }
+        });
+        const currentConfig = (currentSession?.config as any) || {};
+        const mergedConfig = { ...currentConfig, ...config };
+
         const updated = await prisma.session.update({
             where: { sessionId },
-            data: { config }
+            data: { config: mergedConfig }
         });
 
-        // Update active instance if exists
+        // Update active instance in memory
         const instance = waManager.getInstance(sessionId);
         if (instance) {
-            // In a real app we might update internal instance state
+            instance.config = mergedConfig;
         }
 
         return NextResponse.json({ status: true, message: "Session settings updated successfully", data: updated });

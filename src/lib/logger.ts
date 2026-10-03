@@ -1,5 +1,5 @@
 /**
- * WANA Logger — Beautiful colored console output
+ * WINA Logger — Beautiful colored console output
  * 
  * Usage:
  *   import { logger } from "@/lib/logger";

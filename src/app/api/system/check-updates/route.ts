@@ -7,7 +7,7 @@ import { getAuthenticatedUser } from "@/lib/api-auth";
 // For simplicity, we just check if a notification with this version title exists for the user.
 
 const REPO_OWNER = "mspark";
-const REPO_NAME = "WANA";
+const REPO_NAME = "WINA";
 
 import { NextRequest } from "next/server";
 

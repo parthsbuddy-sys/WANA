@@ -27,7 +27,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
-             return user;
+            // Check if email is verified (SUPERADMIN always allowed)
+            if (!user.emailVerified && user.role !== 'SUPERADMIN') {
+              throw new Error("EMAIL_NOT_VERIFIED");
+            }
+            return user;
           }
         }
         return null;

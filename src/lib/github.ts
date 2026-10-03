@@ -6,7 +6,7 @@ export async function getLatestRelease(owner: string, repo: string) {
         const res = await fetch(url, {
             headers: {
                 "Accept": "application/vnd.github+json",
-                "User-Agent": "WANA-System"
+                "User-Agent": "WINA-System"
             },
             cache: 'no-store' // Disable cache for debugging
         });

@@ -1,22 +1,23 @@
 import fs from 'fs';
 import path from 'path';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import { DocsClient } from './docs-client';
+import { WinaLogo } from '@/components/ui/wina-logo';
+import { ExternalLink, Terminal, LayoutDashboard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const metadata = {
-    title: 'API Documentation - WANA',
-    description: 'Complete API reference for WANA WhatsApp Gateway. Includes endpoints for messaging, groups, contacts, media, and webhooks.',
+    title: 'API Documentation - WINA',
+    description: 'Complete API reference for WINA (WhatsApp Intelligent Next-gen Agent). Includes endpoints for messaging, groups, contacts, media, and webhooks.',
     openGraph: {
-        title: 'API Documentation - WANA',
-        description: 'Complete API reference for WANA WhatsApp Gateway.',
+        title: 'API Documentation - WINA',
+        description: 'Complete API reference for WINA WhatsApp Gateway.',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'API Documentation - WANA',
-        description: 'Complete API reference for WANA WhatsApp Gateway.',
+        title: 'API Documentation - WINA',
+        description: 'Complete API reference for WINA WhatsApp Gateway.',
     },
 };
 
@@ -36,7 +37,7 @@ export default async function PublicDocsPage() {
     const filePath = path.join(process.cwd(), 'docs', 'API_DOCUMENTATION.md');
     const packagePath = path.join(process.cwd(), 'package.json');
     let content = '';
-    let version = 'v1.0.0';
+    let version = 'v1.6.4';
 
     try {
         content = fs.readFileSync(filePath, 'utf8');
@@ -83,30 +84,36 @@ export default async function PublicDocsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col selection:bg-primary/30 selection:text-primary-foreground">
             {/* Header */}
-            <header className="bg-white border-b sticky top-0 z-30 shadow-sm/50">
-                <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="text-xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                            WANA
-                        </span>
-                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold tracking-wide border border-blue-200">
-                            {version}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-4">
+            <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-3">
+                        <div className="flex items-center justify-center">
+                            <WinaLogo size={32} idPrefix="docs-header" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xl font-black text-slate-900 dark:text-white">
+                                WINA
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold tracking-wide border border-emerald-500/20">
+                                {version}
+                            </span>
+                        </div>
+                    </Link>
+
+                    <div className="flex items-center gap-3">
                         <Link
                             href="/swagger"
-                            className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
+                            target="_blank"
+                            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
                         >
-                            Swagger UI
+                            <Terminal size={14} /> Swagger UI <ExternalLink size={12} />
                         </Link>
-                        <Link
-                            href="/dashboard"
-                            className="text-sm font-medium px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all shadow-md hover:shadow-lg"
-                        >
-                            Dashboard
+                        <Link href="/dashboard">
+                            <Button size="sm" className="gap-2 font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm">
+                                <LayoutDashboard size={14} /> Console
+                            </Button>
                         </Link>
                     </div>
                 </div>

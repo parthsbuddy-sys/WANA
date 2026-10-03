@@ -35,7 +35,9 @@ export async function GET(
             where: {
                 OR: [
                     { sessionId: session.id }, // Specific to this session (anyone who created it)
-                    { sessionId: null, userId: user.id } // User's own global webhooks
+                    user.role === "SUPERADMIN"
+                        ? { sessionId: null }
+                        : { sessionId: null, userId: user.id } // User's own global webhooks
                 ]
             },
             include: {

@@ -27,7 +27,8 @@ import {
     Tag,
     MessageCircleReply,
     Contact,
-    UserPlus
+    UserPlus,
+    TrendingUp
 } from "lucide-react";
 import { useSidebar } from "./sidebar-context";
 import {
@@ -78,9 +79,9 @@ const navGroups: NavGroup[] = [
     {
         label: "Automation",
         items: [
-            { href: "/dashboard/bot-settings", label: "Bot Settings", icon: Bot },
+            { href: "/dashboard/bot-settings", label: "Agent Settings", icon: Bot },
             { href: "/dashboard/autoreply", label: "Auto Reply", icon: MessageCircleReply },
-            { href: "/dashboard/profile", label: "Bot Profile", icon: UserCircle },
+            { href: "/dashboard/profile", label: "Agent Profile", icon: UserCircle },
             { href: "/dashboard/scheduler", label: "Scheduler", icon: CalendarClock },
             { href: "/dashboard/webhooks", label: "Webhooks & API", icon: Webhook },
         ],
@@ -88,19 +89,20 @@ const navGroups: NavGroup[] = [
     {
         label: "Developer",
         items: [
-            { href: "/docs", label: "API Docs", icon: FileText },
-            { href: "/swagger", label: "Swagger UI", icon: Code, external: true },
+            { href: "/docs", label: "API Docs", icon: FileText, superadminOnly: true },
+            { href: "/swagger", label: "Swagger UI", icon: Code, external: true, superadminOnly: true },
         ],
     },
     {
         label: "Administration",
         items: [
+            { href: "/dashboard/analytics", label: "Analytics & Telemetry", icon: TrendingUp, superadminOnly: true },
             { href: "/dashboard/media", label: "Media Manager", icon: HardDrive },
             { href: "/dashboard/sessions/access", label: "Session Access", icon: UserPlus },
-            { href: "/dashboard/users", label: "Users", icon: Users, superadminOnly: true },
-            { href: "/dashboard/settings", label: "Settings", icon: Settings },
+            { href: "/dashboard/users", label: "User Management", icon: Users, superadminOnly: true },
+            { href: "/dashboard/settings", label: "System Settings", icon: Settings, superadminOnly: true },
             { href: "/dashboard/system-monitor", label: "System Monitor", icon: Activity, superadminOnly: true },
-            { href: "/dashboard/notifications", label: "Notifications", icon: Bell, superadminOnly: true },
+            { href: "/dashboard/notifications", label: "Broadcast Alerts", icon: Bell, superadminOnly: true },
         ],
     },
 ];

@@ -39,7 +39,7 @@ export async function POST(
         // Convert File to Buffer
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        const pack = formData.get("pack") as string || "WANA";
+        const pack = formData.get("pack") as string || "WINA";
         const author = formData.get("author") as string || user.name || "User";
         const type = (formData.get("type") as string) || "full";
         const quality = parseInt(formData.get("quality") as string) || 50;

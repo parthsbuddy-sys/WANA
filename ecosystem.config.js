@@ -7,6 +7,9 @@ module.exports = {
       interpreter: "none", // Avoid PM2 trying to run npx as a Node.js script directly
       watch: false,
       autorestart: true,
+      restart_delay: 8000,              // Wait at least 8s before trying to restart
+      exp_backoff_restart_delay: 15000, // Double backoff time on repeated failures
+      max_restarts: 5,                  // Hard stop after 5 failed reconnects to avoid Meta auth spam
       max_memory_restart: "1G",
       exec_mode: "fork",
       env: {

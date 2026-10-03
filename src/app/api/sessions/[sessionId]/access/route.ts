@@ -149,6 +149,16 @@ export async function POST(
             }
         });
 
+        // Notify recipient user
+        const { createNotification } = await import("@/lib/notifications");
+        createNotification({
+            userId: targetUser.id,
+            title: "🔑 Shared Session Access",
+            message: `You have been granted access to WhatsApp session "${dbSession.name || sessionId}".`,
+            type: "INFO",
+            href: "/dashboard/chat"
+        }).catch(() => {});
+
         return NextResponse.json({
             status: true,
             message: `Access granted to ${targetUser.email}`,

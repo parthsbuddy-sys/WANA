@@ -37,13 +37,18 @@ export async function PUT(
         }
 
         // Verify ownership and session context
+        const isSuperAdmin = user.role === "SUPERADMIN";
         const existing = await prisma.webhook.findFirst({
             where: {
                 id,
-                OR: [
-                    { sessionId: session.id },
-                    { sessionId: null, userId: user.id }
-                ]
+                ...(isSuperAdmin
+                    ? {}
+                    : {
+                        OR: [
+                            { sessionId: session.id },
+                            { sessionId: null, userId: user.id }
+                        ]
+                    })
             }
         });
 
@@ -100,13 +105,18 @@ export async function DELETE(
             return NextResponse.json({ status: false, message: "Session not found", error: "Session not found" }, { status: 404 });
         }
 
+        const isSuperAdmin = user.role === "SUPERADMIN";
         const existing = await prisma.webhook.findFirst({
             where: {
                 id,
-                OR: [
-                    { sessionId: session.id },
-                    { sessionId: null, userId: user.id }
-                ]
+                ...(isSuperAdmin
+                    ? {}
+                    : {
+                        OR: [
+                            { sessionId: session.id },
+                            { sessionId: null, userId: user.id }
+                        ]
+                    })
             }
         });
 

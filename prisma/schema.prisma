@@ -36,17 +36,18 @@ enum MessageStatus {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String
-  role      Role     @default(OWNER)
-  apiKey    String?  @unique // API Key for authentication
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  role          Role      @default(OWNER)
+  apiKey        String?   @unique // API Key for authentication
+  emailVerified DateTime? // Timestamp when email was verified
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   
-  sessions  Session[]
-  webhooks  Webhook[]
+  sessions      Session[]
+  webhooks      Webhook[]
   notifications Notification[]
   sessionAccesses SessionAccess[]
 }
@@ -272,12 +273,12 @@ model BotConfig {
   removeBgApiKey String?
   prefix        String   @default("#")
   
-  // Anti-Spam / Rate Limit
-  antiSpamEnabled Boolean @default(false)
-  spamLimit       Int     @default(5)    // Messages allowed in window
-  spamInterval    Int     @default(10)   // Seconds window
-  spamDelayMin    Int     @default(1000) // MS min delay
-  spamDelayMax    Int     @default(3000) // MS max delay
+  // Anti-Spam / Rate Limit (High Survival Safe Defaults)
+  antiSpamEnabled Boolean @default(true)
+  spamLimit       Int     @default(1)     // Strictly 1 message at a time (no bursts)
+  spamInterval    Int     @default(60)    // 60-second rolling window
+  spamDelayMin    Int     @default(4000)  // 4000ms (4s) min delay
+  spamDelayMax    Int     @default(10000) // 10000ms (10s) max delay with jitter
 
   // Automation & Presence
   welcomeMessage  String? @db.Text
@@ -397,4 +398,19 @@ model BroadcastRecipient {
   broadcastLog    BroadcastLog @relation(fields: [broadcastLogId], references: [id], onDelete: Cascade)
 
   @@index([broadcastLogId])
+}
+
+// Verification tokens and OTP codes for Email Verification & Password Reset
+model VerificationCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String   // 6-digit OTP code (e.g. 849201)
+  token     String   @unique // Secure url token for 1-click link
+  type      String   @default("EMAIL_VERIFICATION") // EMAIL_VERIFICATION, PASSWORD_RESET
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+  @@index([email, code])
 }
